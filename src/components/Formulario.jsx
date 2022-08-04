@@ -25,12 +25,18 @@ const Formulario = () => {
         setTarea("");
     }
 
+    const borrarTarea = (nombre)=> {
+        let arregloModificado = arregloTareas.filter((valor)=>{return valor !== nombre});
+        // actualizar el state
+        setArregloTareas(arregloModificado)
+    }
+
     // Aqui va el Maquetado
     return (
         <div>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3 d-flex">
-                    <Form.Control type="text" placeholder="Ingrese una tarea" onChange={(e) => { setTarea(e.target.value.trim()); }} value={tarea}/>
+                    <Form.Control type="text" placeholder="Ingrese una tarea" onChange={(e) => { setTarea(e.target.value.trimStart()); }} value={tarea}/>
 
                     <Button variant="primary" type="submit">
                     Enviar
@@ -39,7 +45,7 @@ const Formulario = () => {
             </Form>
 
             {/* Aqui invoco a la lista de tarea */} 
-            <ListaTareas arregloTareas={arregloTareas}></ListaTareas>
+            <ListaTareas arregloTareas={arregloTareas} borrarTarea={borrarTarea}></ListaTareas>
         </div>
     );
 };
