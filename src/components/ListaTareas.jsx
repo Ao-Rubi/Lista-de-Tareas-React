@@ -28,7 +28,7 @@ const ListaTareas = () => {
         <div>
             <ListGroup>
                 {
-                    listaTareas.map((tarea) => {return <ItemTarea key={tarea._id} tareaCargada={tarea} ></ItemTarea>})
+                    listaTareas.map((tarea) => {return <ItemTarea key={tarea._id} tareaCargada={tarea} consultarAPI={consultarAPI}></ItemTarea>})
                 }
             </ListGroup>
         </div>
