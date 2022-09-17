@@ -5,38 +5,41 @@ import ListaTareas from './ListaTareas';
 
 const Formulario = () => {
     // Aqui va la logica
-    let tareaLocalStorage = JSON.parse(localStorage.getItem("listaTareas")) || [];
+
     // Crear un state
-    const [arregloTareas, setArregloTareas] = useState(tareaLocalStorage);
     const [tarea, setTarea] = useState("");
 
-    // Ciclo de vida del componente
-    useEffect(()=>{
-        console.log("Prueba de ciclo de vida")
-        localStorage.setItem("listaTareas", JSON.stringify(arregloTareas));
-    }, [arregloTareas]);
+    const URL = process.env.REACT_APP_API_SERVER; //llamada a la base de datos
 
     // Funciones
-    // const actualizarTarea = (e) => {
-    //     // obtener el value del input
-    //     // console.log(e.target.value);
-    //     // actualizar el state
-    //     setTarea(e.target.value.trim());
-    // }
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("prueba desde submit");
-        // Actualizar la lista de tarea
-        setArregloTareas([...arregloTareas, tarea]);
-        setTarea("");
+        if (tarea.length > 0) {
+            const nuevaTarea = {
+                tarea: tarea
+            }
+
+            try {
+                const respuesta = await fetch(URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify(nuevaTarea)
+                })
+
+                console.log(respuesta)
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 
-    const borrarTarea = (nombre)=> {
-        let arregloModificado = arregloTareas.filter((valor)=>{return valor !== nombre});
-        // actualizar el state
-        setArregloTareas(arregloModificado)
-    }
+    // const borrarTarea = (nombre)=> {
+    //     let arregloModificado = arregloTareas.filter((valor)=>{return valor !== nombre});
+    //     // actualizar el state
+    //     setArregloTareas(arregloModificado)
+    // }
 
     // Aqui va el Maquetado
     return (
@@ -45,14 +48,14 @@ const Formulario = () => {
                 <Form.Group className="mb-3 d-flex">
                     <Form.Control type="text" placeholder="Ingrese una tarea" onChange={(e) => { setTarea(e.target.value.trimStart()); }} value={tarea}/>
 
-                    <Button variant="primary" type="submit">
+                    <Button className='ms-5' variant="primary" type="submit">
                     Enviar
                     </Button>
                 </Form.Group>
             </Form>
 
             {/* Aqui invoco a la lista de tarea */} 
-            <ListaTareas arregloTareas={arregloTareas} borrarTarea={borrarTarea}></ListaTareas>
+            <ListaTareas></ListaTareas>
         </div>
     );
 };
