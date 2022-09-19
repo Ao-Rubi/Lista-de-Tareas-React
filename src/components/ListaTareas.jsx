@@ -9,8 +9,13 @@ const ListaTareas = () => {
     const [listaTareas, setListaTareas] = useState([]);
 
     useEffect(()=>{
-        consultarAPI();
-    }, listaTareas);
+        const interval = setInterval(()=>{
+            consultarAPI();
+        },2500)
+
+        return ()=>{clearInterval(interval)}
+        // consultarAPI();
+    }, []);
 
     const consultarAPI = async ()=>{
         //Peticion get
