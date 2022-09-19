@@ -1,39 +1,13 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ItemTarea from './ItemTarea';
 
-const ListaTareas = () => {
-    const URL = process.env.REACT_APP_API_SERVER; //llamada a la base de datos
-
-    const [listaTareas, setListaTareas] = useState([]);
-
-    useEffect(()=>{
-        const interval = setInterval(()=>{
-            consultarAPI();
-        },2500)
-
-        return ()=>{clearInterval(interval)}
-        // consultarAPI();
-    }, []);
-
-    const consultarAPI = async ()=>{
-        //Peticion get
-        try {
-            const respuesta = await fetch(URL);
-            const listaTareas = await respuesta.json();
-
-            setListaTareas(listaTareas);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+const ListaTareas = ({handleDelete, listaTareas}) => {
     return (
         <div>
             <ListGroup>
                 {
-                    listaTareas.map((tarea) => {return <ItemTarea key={tarea._id} tareaCargada={tarea} consultarAPI={consultarAPI}></ItemTarea>})
+                    listaTareas.map((tarea) => {return <ItemTarea key={tarea._id} tareaCargada={tarea} handleDelete={handleDelete}></ItemTarea>})
                 }
             </ListGroup>
         </div>

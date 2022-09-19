@@ -3,9 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ListaTareas from './ListaTareas';
 
-const Formulario = () => {
+const Formulario = ({listaTareas, setUpdateComponent}) => {
     // Aqui va la logica
-
     // Crear un state
     const [tarea, setTarea] = useState("");
 
@@ -28,10 +27,31 @@ const Formulario = () => {
                     body: JSON.stringify(nuevaTarea)
                 })
 
-                console.log(respuesta)
+                if (respuesta.status === 201) {
+                    setUpdateComponent(true)
+                }
+                
             } catch (error) {
                 console.log(error)
             }
+        }
+    }
+
+    const handleDelete = async (_id)=>{
+        try {
+            const parametro = {
+                method: "DELETE"
+            }
+
+            const respuesta = await fetch(URL + "/" + _id, parametro)
+            console.log(respuesta)
+
+            if (respuesta.status === 200) {
+                setUpdateComponent(true);
+            }
+
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -49,7 +69,7 @@ const Formulario = () => {
             </Form>
 
             {/* Aqui invoco a la lista de tarea */} 
-            <ListaTareas></ListaTareas>
+            <ListaTareas listaTareas={listaTareas} handleDelete={handleDelete}></ListaTareas>
         </div>
     );
 };
