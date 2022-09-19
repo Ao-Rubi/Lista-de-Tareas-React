@@ -10,7 +10,7 @@ const ListaTareas = () => {
 
     useEffect(()=>{
         consultarAPI();
-    }, []);
+    }, listaTareas);
 
     const consultarAPI = async ()=>{
         //Peticion get
